@@ -160,6 +160,9 @@ class func{
     * Make function take array as param by default
     * [0] defines which table to loot from
     * [1] is array, and i guess does whatever the rest of my function already does
+    --------------------------------------------------------------------------------
+    * send array with results to JS function which clones and appends entry cards to
+      ajax content.load() div or something
   */
   public static function getEntries($categories){
     func::connectToDB();
