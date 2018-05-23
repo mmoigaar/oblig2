@@ -91,6 +91,10 @@ header h1{
   padding: 15px;
   margin-bottom: 25px;
 }
+#logout, #login{
+  height: 50px;
+  width: 100px;
+}
 .title{
   height: 20%;
 }

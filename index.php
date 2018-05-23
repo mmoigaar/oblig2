@@ -7,6 +7,8 @@
   <body>
     <?php
       session_start();
+      include 'functions.php';
+      func::checkLoginState();
       include 'include/header.php';
     ?>
     <div id="main" class="flex">

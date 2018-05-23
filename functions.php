@@ -2,69 +2,77 @@
 
 class func{
 
+  // Checks if visitor is logged in. Sets cookie no cookie exists.
   public static function checkLoginState(){
+
+    /*
+      TO DO:
+      * Figure out how to increase cookie lifespan on each login
+    */
+
+
+    // Check if logged in
     if(!isset($_SESSION['user'])){
-      include 'include/guestDropdown.php';
+      // if not logged in, set guest cookie if no cookie exists
       if(!isset($_COOKIE['user'])){
         setcookie('user', 'guest', time()+25);
         $_COOKIE['displayPrefs'] = [];
       }
-    } else{
-      include 'include/userDropdown.php';
-    }
-    /*
-    else{
-      $host = 'localhost';
-      $user = 'root';
-      $password = '';
-      $dbname = 'urban_dictionary';
-
-      // Set DSN
-      $dsn = 'mysql:host='.$host.';dbname='.$dbname;
-
-      // Create a PDO instance
-      $pdo = new PDO($dsn, $user, $password);
-      $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-
-      $sql = 'SELECT * FROM users';
-
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute();
-      $results = $stmt->fetchAll();
-
-      switch($_SESSION['user']){
-
+    }else{
+      //If logged in, set user cookie if no cookie exists. If guest cookie exists, overwrite.
+      if(!isset($_COOKIE['user'])){
+        setcookie('user', $_SESSION['user'], time()+25);
+        $_COOKIE['displayPrefs'] = [];
+      }else if($_COOKIE['user'] != $_SESSION['user']){
+        $_COOKIE['user'] = $_SESSION['user'];
       }
-
     }
-      */
+    //echo $_COOKIE['user'];
   }
 
-  public static function login($user, $pass, $pdo){
+  // Database connection. Call this for every function where SQL queries are required.
+  public static function connectToDB(){
+    $host = 'localhost';
+    $user = 'root';
+    $password = '';
+    $dbname = 'urban_dictionary';
+
+    // Set DSN
+    $dsn = 'mysql:host='.$host.';dbname='.$dbname;
+
+    // Create a PDO instance
+    $pdo = new PDO($dsn, $user, $password);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+    return $pdo;
+  }
+
+  public static function login($user, $pass){
+    $pdo = func::connectToDB();
+
     $sql = 'SELECT * FROM users WHERE username = ?';
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$user]);
-    $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $results = $stmt->fetchAll();
 
-    //var_dump($results);
+    var_dump($results);
     foreach($results as $result){
       //echo $user->username . '<br>';
       if($result->username == $user && $result->password == $pass){
-        session_start();
         $_SESSION['user'] = $user;
-
         header('location:index.php');
       }
     }
   }
 
-  public static function register($user, $pass, $email, $pdo){
+  public static function register($user, $pass, $email){
+    $pdo = func::connectToDB();
+
     $sql = 'SELECT * FROM users WHERE username = ?';
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$user]);
-    $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $results = $stmt->fetchAll();
 
     $existing = false;
 
@@ -94,18 +102,7 @@ class func{
 
   // Alternatively I can do some object relational mapping if I cba learning it
   public static function submit($title, $author, $content, $context, $categories){
-    $host = 'localhost';
-    $user = 'root';
-    $password = '';
-    $dbname = 'urban_dictionary';
-
-    // Set DSN
-    $dsn = 'mysql:host='.$host.';dbname='.$dbname;
-
-    // Create a PDO instance
-    $pdo = new PDO($dsn, $user, $password);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-
+    $pdo = func::connectToDB();
 
     // Entry insert things
     $sql = 'SELECT * FROM entries WHERE title = ?';
@@ -153,6 +150,36 @@ class func{
     }
 
     // Category_entry things
+  }
+
+
+
+  // Gets all entries in a given category.
+  /*
+    POSSIBLE TO DO:
+    * Make function take array as param by default
+    * [0] defines which table to loot from
+    * [1] is array, and i guess does whatever the rest of my function already does
+  */
+  public static function getEntries($categories){
+    func::connectToDB();
+
+    $sql = 'SELECT * FROM entries WHERE category = ';
+    if(is_array($categories)){
+      $sql += $categories[0];
+      for($i = 1; $i < count($categories); $i++){
+        // if entry already has $categories[$i] as alternative category, don't do next step
+        // Or make good query rather. Can't be that hard.
+        $sql += ' OR category = ' $categories[$i];
+      }
+    }else{
+      $sql += $categories;
+    }
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll();
+
+
   }
 
 }
