@@ -7,7 +7,7 @@
   <body>
     <?php
       session_start();
-      include "header.php";
+      include "include/header.php";
     ?>
 
     <div id="main">

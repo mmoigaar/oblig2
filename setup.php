@@ -1,5 +1,4 @@
 <?php
-
 /*
 $conn = new mysqli('localhost', 'root', '', 'urban_dictionary');
 
@@ -7,6 +6,7 @@ if ($conn->connect_error){
   die("Connection failed: " . $conn->connect_error);
 }
 echo "connected yo <br>";
+
 
 $query = "CREATE TABLE users(
   username VARCHAR(20) NOT NULL UNIQUE PRIMARY KEY,
@@ -18,7 +18,9 @@ $query = "CREATE TABLE users(
 $conn->query($query) or die ($conn->error);
 
 $query = "CREATE TABLE categories(
-  title VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY
+  title VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY,
+  author VARCHAR(20) NOT NULL,
+  FOREIGN KEY(author) REFERENCES users(username)
 )";
 
 $conn->query($query) or die ($conn->error);

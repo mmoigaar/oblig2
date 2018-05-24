@@ -130,26 +130,36 @@ class func{
     $results = $stmt->fetchAll();
     $existing = false;
 
-    var_dump($categories);
+    //var_dump($categories);
 
     foreach($categories as $category){
-      foreach($results as $result){
-        echo $result->title."<br>";
-        if(isset($result) && $result->title == $category){
-          $existing = true;
-          echo $result->title." already exists <br>";
+
+      //var_dump(count($results));
+        foreach($results as $result){
+          //echo $result->title."<br>";
+          if(isset($result) && $result->title == $category){
+            $existing = true;
+            echo $result->title." already exists <br>";
+          }
         }
-      }
+
+      // why the fuck doesn't it I N S E R T
       if($existing == false){
-        $sql = 'INSERT INTO categories(title)
-                VALUES(?)';
+
+        $sql = 'INSERT INTO categories(title, author)
+                VALUES(?, ?)';
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$category]);
+        $stmt->execute([$category, $author]);
       }
       $existing = false;
-    }
 
-    // Category_entry things
+      // Category_entry things
+      $sql = 'INSERT INTO category_entries(category, entry)
+              VALUES(?, ?)';
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute([$category, $title]);
+
+    }
   }
 
 
