@@ -167,17 +167,20 @@ class func{
   public static function getEntries($categories){
     func::connectToDB();
 
-    $sql = 'SELECT * FROM entries WHERE category = ';
+    $sql = 'SELECT * FROM category_entries WHERE category = ';
     if(is_array($categories)){
       $sql += $categories[0];
       for($i = 1; $i < count($categories); $i++){
         // if entry already has $categories[$i] as alternative category, don't do next step
         // Or make good query rather. Can't be that hard.
-        $sql += ' OR category = ' $categories[$i];
+        $sql += ' OR category = '.$categories[$i];
       }
     }else{
       $sql += $categories;
     }
+    //No idea if this works. Should probably fix DB and submit first.
+    $sql += ' INNER JOIN entries ON entries.title = category.entry';
+
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     $results = $stmt->fetchAll();
