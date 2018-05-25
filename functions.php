@@ -174,29 +174,59 @@ class func{
     * send array with results to JS function which clones and appends entry cards to
       ajax content.load() div or something
   */
-  public static function getEntries($categories){
-    func::connectToDB();
 
-    $sql = 'SELECT * FROM category_entries WHERE category = ';
-    if(is_array($categories)){
-      $sql += $categories[0];
+  // 300 IQ function right here. Good luck trying to comment tomorrow.
+  // Gets unique entries if they match one or more categories in the array sent as parameter.
+  public static function getEntries($categories){
+    $pdo = func::connectToDB();
+
+    $sql =
+      'SELECT DISTINCT entry
+       FROM category_entries
+       WHERE category = ';
+
+    if(count($categories) > 1){
+
+      $sql .= '"'.$categories[0].'"';
+
       for($i = 1; $i < count($categories); $i++){
-        // if entry already has $categories[$i] as alternative category, don't do next step
-        // Or make good query rather. Can't be that hard.
-        $sql += ' OR category = '.$categories[$i];
+        $sql .= ' OR category = "'.$categories[$i].'"';
       }
     }else{
-      $sql += $categories;
+      $sql .= '"'.$categories.'"';
     }
-    //No idea if this works. Should probably fix DB and submit first.
-    $sql += ' INNER JOIN entries ON entries.title = category.entry';
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    $results = $stmt->fetchAll();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    $sql =
+      'SELECT DISTINCT title, content, context
+       FROM entries
+       WHERE title = "'.$results[0]['entry'].'"';
 
-  }
+    if(count($results) > 1){
+      for($i = 1; $i < count($results); $i++){
+        $sql .= ' OR entries.title = "'.$results[$i]['entry'].'"';
+      }
+    }
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    /*
+    foreach($results as $result){
+      print_r($result);
+      echo "<br>";
+    }
+    */
+
+    $json = json_encode($results, JSON_FORCE_OBJECT);
+    echo $json;
+    // I'm a fucking god
+
+  } // End function getEntries
 
 }
 
