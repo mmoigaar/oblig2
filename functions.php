@@ -162,21 +162,25 @@ class func{
     }
   }
 
+  public static function getCategories(){
+    $pdo = func::connectToDB();
+
+    $sql =
+      'SELECT title
+       FROM categories';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $json = json_encode($results);
+    return $json;
 
 
-  // Gets all entries in a given category.
+  }
+
+
   /*
-    POSSIBLE TO DO:
-    * Make function take array as param by default
-    * [0] defines which table to loot from
-    * [1] is array, and i guess does whatever the rest of my function already does
-    --------------------------------------------------------------------------------
-    * send array with results to JS function which clones and appends entry cards to
-      ajax content.load() div or something
-  */
-
-  // 300 IQ function right here. Good luck trying to comment tomorrow.
-  // Gets unique entries if they match one or more categories in the array sent as parameter.
+  // Gets unique entries if they match one or more categories in an array.
   public static function getEntries($categories){
     $pdo = func::connectToDB();
 
@@ -215,12 +219,47 @@ class func{
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $json = $results;
+    $json = json_encode($results);
     //echo $json;
     // I'm a fucking god
     return $json;
   } // End function getEntries
+  */
 
+  // Gets unique entries and adds "classes" index with all relevant classes for each entry. Returns final result as JSON data.
+  public static function getEntries(){
+    $pdo = func::connectToDB();
+
+    $sql =
+      'SELECT *
+       FROM category_entries';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $ca_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $sql =
+      'SELECT DISTINCT title, content, context
+       FROM entries';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $entry_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    for($i=0; $i < count($entry_results); $i++){
+
+      $entry_results[$i]['classes'] = array();
+
+      foreach($ca_results as $caRow){
+        if($entry_results[$i]['title'] == $caRow['entry']){
+        $entry_results[$i]['classes'][] = $caRow['category'];
+        }
+      }
+    }
+    $json = json_encode($entry_results);
+
+    return $json;
+  } // End function getEntries
 }
 
 ?>

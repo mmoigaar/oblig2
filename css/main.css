@@ -54,6 +54,9 @@
 .orange{
   background-color: orange;
 }
+.hide{
+  display: none;
+}
 header{
   height: 5vh;
   width: 70vw;
@@ -78,14 +81,23 @@ header h1{
 #sidebar{
   width: 25vw;
   height: 100%;
+  text-align: center;
 }
 
 #search{
   height: 200px;
   margin-bottom: 50px;
 }
+#categoryTemplate, #cardTemplate, #pTemplate{
+  display: none;
+}
+.category{
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 10px;
+}
 
-#entryCard{
+.entryCard{
   width: 80%;
   height: 200px;
   padding: 15px;

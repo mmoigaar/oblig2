@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="js/main.js"></script>
+    <!--
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  -->
   </head>
   <body>
     <?php
@@ -14,87 +16,68 @@
       include 'functions.php';
       func::checkLoginState();
       include 'include/header.php';
-      $categories = ['cat1', 'cat2', 'cat3'];
-      $json = func::getEntries($categories);
+
+      $categoryJSON = func::getCategories();
+      $cardJSON = func::getEntries();
     ?>
+
     <div id="main" class="flex">
-      <script>
-        var json = <?php echo json_encode($json) ?>;
-        appendCards(json);
-      </script>
+
+      <div id="sidebar" class="pink">
+        <div id="categoriesContainer">
+          <h2>Categories</h2>
+          <hr/>
+          <div class="category" onclick="displayChoice('showAll')">
+            <h3 class="blue">Show all</h3>
+          </div>
+        </div>
+      </div>
+
       <div id="content" class="w100">
         <div id="search" class="w100 blue">
           <h1>No idea if you're logged in, yo. Check icon.</h1>
         </div>
-        <div id="container" class="w100">
-          <div id="entryCard" class="block orange">
-            <h3 class="title block w100">qweqweqweqweqwe</h3>
-            <div class="entryContent flex">
-              <div class="left w45 pink">
-                <article class="description block h50">
-                  <p>qweeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</p>
-                </article>
-                <article class="context block h50 blue">
-                  <p><i>Q W E</i></p>
-                </article>
-              </div>
-              <div class="right w45 blue">
-                <div class="entryInfo block h50 pink">
-                  <div class="likes w45 block"></div>
-                  <div class="categories w45 block"></div>
-                </div>
-                <div class="submitInfo w45">
-                  <p class="submissionDate"></p>
-                  <p class="submittedBy"></p>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div id="entryCard" class="block orange">
-            <h3 class="title block w100">Saying orqqqqqqqqq whatever</h3>
-            <div class="entryContent flex">
-              <div class="left w45 pink">
-                <article class="description block h50"></article>
-                <article class="context block h50 blue"></article>
-              </div>
-              <div class="right w45 blue">
-                <div class="entryInfo block h50 pink">
-                  <div class="likes w45 block"></div>
-                  <div class="categories w45 block"></div>
-                </div>
-                <div class="submitInfo w45">
-                  <p class="submissionDate"></p>
-                  <p class="submittedBy"></p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div id="cardContainer" class="w100"></div>
 
-          <div id="entryCard" class="block orange">
-            <h3 class="title block w100">Saying orqqqqqqqqq whatever</h3>
-            <div class="entryContent flex">
-              <div class="left w45 pink">
-                <article class="description block h50"></article>
-                <article class="context block h50 blue"></article>
-              </div>
-              <div class="right w45 blue">
-                <div class="entryInfo block h50 pink">
-                  <div class="likes w45 block"></div>
-                  <div class="categories w45 block"></div>
-                </div>
-                <div class="submitInfo w45">
-                  <p class="submissionDate"></p>
-                  <p class="submittedBy"></p>
-                </div>
-              </div>
+      </div>
+
+    </div>
+
+    <!-- Templates ---------------------------------------------------->
+
+    <div id="categoryTemplate" class="category categoryItem">
+      <h3 class="blue"></h3>
+    </div>
+
+    <div id="cardTemplate" class="entryCard block orange">
+      <h3 class="title block w100"></h3>
+      <div class="entryContent flex">
+        <div class="left w45 pink description block h50">
+            <p class="descPar"></p>
+        </div>
+        <div class="right w45 blue">
+          <article class="context block h50 blue">
+            <p><i class="contextPar"></i></p>
+          </article>
+            <div class="categories h50 block pink">
+              <h4>Categories</h4>
+              <p></p>
             </div>
-          </div>
         </div>
       </div>
-      <div id="sidebar" class="pink">
-        <!-- No idea what goes here yet-->
-      </div>
     </div>
+
+    <p id="pTemplate"></p>
+
+
+    <script src="js/main.js"></script>
+    <script>
+      var categoryJSON = <?php echo $categoryJSON ?>;
+      var cardJSON = <?php echo $cardJSON ?>;
+      appendCategories(categoryJSON);
+      appendCards(cardJSON);
+    </script>
+    <script src="js/main.js"></script>
   </body>
 </html>
