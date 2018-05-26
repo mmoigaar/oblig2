@@ -3,10 +3,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="js/main.js"></script>
   </head>
   <body>
     <?php
@@ -14,18 +14,19 @@
       include 'functions.php';
       func::checkLoginState();
       include 'include/header.php';
+      $categories = ['cat1', 'cat2', 'cat3'];
+      $json = func::getEntries($categories);
     ?>
     <div id="main" class="flex">
+      <script>
+        var json = <?php echo json_encode($json) ?>;
+        appendCards(json);
+      </script>
       <div id="content" class="w100">
         <div id="search" class="w100 blue">
           <h1>No idea if you're logged in, yo. Check icon.</h1>
         </div>
         <div id="container" class="w100">
-
-          <?php
-            $categories = ['cat1', 'cat2', 'cat3'];
-            func::getEntries($categories);
-          ?>
           <div id="entryCard" class="block orange">
             <h3 class="title block w100">qweqweqweqweqwe</h3>
             <div class="entryContent flex">

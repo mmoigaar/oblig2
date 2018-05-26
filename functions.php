@@ -215,17 +215,10 @@ class func{
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    /*
-    foreach($results as $result){
-      print_r($result);
-      echo "<br>";
-    }
-    */
-
-    $json = json_encode($results, JSON_FORCE_OBJECT);
-    echo $json;
+    $json = $results;
+    //echo $json;
     // I'm a fucking god
-
+    return $json;
   } // End function getEntries
 
 }
