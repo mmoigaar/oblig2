@@ -260,6 +260,21 @@ class func{
 
     return $json;
   } // End function getEntries
+
+  public static function listOwnEntries($user){
+    $pdo = func::connectToDB();
+
+    $sql =
+      'SELECT *
+       FROM entries
+       WHERE author = "'.$user.'"';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+  } // End function listOwnEntries
 }
 
 ?>
