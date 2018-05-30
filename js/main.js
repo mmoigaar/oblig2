@@ -13,18 +13,24 @@ function appendCategories(json){
 }// End function Categories
 
 function appendCards(json){
-
+  console.log(json);
   for(i = 0; i < json.length; i++){
 
     var tmpl = $('#cardTemplate').clone();
     tmpl.removeAttr('id');
 
-    for(j = 0; j < json[i].classes.length; j++){
-      tmpl.addClass(json[i].classes[j]);
+    if(typeof(json[i].classes) == 'array'){
 
-      tmpl.find('.categories').find('p').html(
-        tmpl.find('.categories').find('p').html()+json[i].classes[j]+' '
-      );
+      for(j = 0; j < json[i].classes.length; j++){
+        tmpl.addClass(json[i].classes[j]);
+
+        tmpl.find('.categories').find('p').html(
+          tmpl.find('.categories').find('p').html()+json[i].classes[j]+' '
+        );
+      }
+    }else{
+      var value = json[i].title;
+      tmpl.find('.deleteEntry').val(value);
     }
 
     tmpl.find('.title').html(json[i].title);

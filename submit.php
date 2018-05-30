@@ -20,10 +20,10 @@
         <textarea name="description" placeholder="Description" class="entryDescription entryInput"></textarea>
 
         <label>Context</label>
-        <input type="context" name="context" placeholder="Context/use in a sentence" class="entryInput">
+        <input type="text" name="context" placeholder="Context/use in a sentence" class="entryInput">
 
         <label>Categories</label>
-        <input type="categories" name="categories" placeholder="celeb, sayings, rap, pop culture" class="entryInput">
+        <input type="text" name="categories" placeholder="celeb, sayings, rap, pop culture" class="entryInput">
 
         <input type="submit" name="submit" class="entryInput">
       </form>

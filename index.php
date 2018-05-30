@@ -16,26 +16,27 @@
       include 'functions.php';
       func::checkLoginState();
       include 'include/header.php';
+      include 'include/cardTemplates.php';
 
       $categoryJSON = func::getCategories();
       $cardJSON = func::getEntries();
     ?>
 
-    <div id="main" class="flex">
-
-      <div id="sidebar" class="pink">
-        <div id="categoriesContainer">
-          <h2>Categories</h2>
-          <hr/>
-          <div class="category" onclick="displayChoice('showAll')">
-            <h3 class="blue">Show all</h3>
-          </div>
-        </div>
+    <div id="main">
+      <div id="search" class="w100 blue">
+        <h1>No idea if you're logged in, yo. Check icon.</h1>
       </div>
 
-      <div id="content" class="w100">
-        <div id="search" class="w100 blue">
-          <h1>No idea if you're logged in, yo. Check icon.</h1>
+      <div id="content" class="w100 flex">
+
+        <div id="sidebar" class="pink">
+          <div id="categoriesContainer">
+            <h2>Categories</h2>
+            <hr/>
+            <div class="category" onclick="displayChoice('showAll')">
+              <h3 class="blue">Show all</h3>
+            </div>
+          </div>
         </div>
 
         <div id="cardContainer" class="w100"></div>
@@ -44,29 +45,26 @@
 
     </div>
 
+    <!--
+    <div id="main" class="flex">
+
+      <div id="content" class="w100">
+
+        <div id="search" class="w100 blue">
+          <h1>No idea if you're logged in, yo. Check icon.</h1>
+        </div>
+
+        <div id="cardContainer" class="w100"></div>
+      </div>
+
+    </div>
+    -->
     <!-- Templates ---------------------------------------------------->
 
     <div id="categoryTemplate" class="category categoryItem">
       <h3 class="blue"></h3>
     </div>
 
-    <div id="cardTemplate" class="entryCard block orange">
-      <h3 class="title block w100"></h3>
-      <div class="entryContent flex">
-        <div class="left w45 pink description block h50">
-            <p class="descPar"></p>
-        </div>
-        <div class="right w45 blue">
-          <article class="context block h50 blue">
-            <p><i class="contextPar"></i></p>
-          </article>
-            <div class="categories h50 block pink">
-              <h4>Categories</h4>
-              <p></p>
-            </div>
-        </div>
-      </div>
-    </div>
 
     <p id="pTemplate"></p>
 
@@ -78,6 +76,5 @@
       appendCategories(categoryJSON);
       appendCards(cardJSON);
     </script>
-    <script src="js/main.js"></script>
   </body>
 </html>

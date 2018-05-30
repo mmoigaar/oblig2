@@ -10,7 +10,6 @@ class func{
       * Figure out how to increase cookie lifespan on each login
     */
 
-
     // Check if logged in
     if(!isset($_SESSION['user'])){
       // if not logged in, set guest cookie if no cookie exists
@@ -59,6 +58,7 @@ class func{
     foreach($results as $result){
       //echo $user->username . '<br>';
       if($result->username == $user && $result->password == $pass){
+        session_start();
         $_SESSION['user'] = $user;
         header('location:index.php');
       }
@@ -257,7 +257,6 @@ class func{
       }
     }
     $json = json_encode($entry_results);
-
     return $json;
   } // End function getEntries
 
@@ -273,6 +272,8 @@ class func{
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    $json = json_encode($results);
+    return $json;
 
   } // End function listOwnEntries
 }
