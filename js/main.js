@@ -19,9 +19,10 @@ function appendCards(json){
     var tmpl = $('#cardTemplate').clone();
     tmpl.removeAttr('id');
 
-    if(typeof(json[i].classes) == 'array'){
+    if(typeof(json[i].classes).isArray){
 
       for(j = 0; j < json[i].classes.length; j++){
+        console.log(json[i].classes[j]);
         tmpl.addClass(json[i].classes[j]);
 
         tmpl.find('.categories').find('p').html(
@@ -42,10 +43,9 @@ function appendCards(json){
 }// End function appendCards
 
 
-var entries = $('.entryCard');
 function displayChoice(category){
+  var entries = $('.entryCard');
 
-  entries.removeClass('hide');
   entries.addClass('hide');
 
   if(category == 'showAll'){
