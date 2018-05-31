@@ -94,6 +94,11 @@ header h1{
 #categoryTemplate, #cardTemplate, #pTemplate{
   display: none;
 }
+#mostPop{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
 .category{
   width: 100%;
   margin: 0 auto;

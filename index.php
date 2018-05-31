@@ -20,6 +20,9 @@
 
       $categoryJSON = func::getCategories();
       $cardJSON = func::getEntries();
+      $mostPop = '"'.func::mostPop().'"';
+      $pref = '"'.func::checkDisplayPref().'"';
+
     ?>
 
     <div id="main">
@@ -31,11 +34,24 @@
 
         <div id="sidebar" class="pink">
           <div id="categoriesContainer">
+
             <h2>Categories</h2>
             <hr/>
+
             <div class="category" onclick="displayChoice('showAll')">
               <h3 class="blue">Show all</h3>
             </div>
+
+            <!-- This has to be form submitted name='rand'-->
+            <div class="category" onclick="displayChoice('rand')">
+              <h3 class="blue">Random</h3>
+            </div>
+
+            <!-- This has to be form submitted name='mostPop'-->
+            <div id="mostPop" class="orange">
+              <h3>Most popular this week:</h3>
+            </div>
+
           </div>
         </div>
 
@@ -45,20 +61,6 @@
 
     </div>
 
-    <!--
-    <div id="main" class="flex">
-
-      <div id="content" class="w100">
-
-        <div id="search" class="w100 blue">
-          <h1>No idea if you're logged in, yo. Check icon.</h1>
-        </div>
-
-        <div id="cardContainer" class="w100"></div>
-      </div>
-
-    </div>
-    -->
     <!-- Templates ---------------------------------------------------->
 
     <div id="categoryTemplate" class="category categoryItem">
@@ -68,12 +70,25 @@
 
     <p id="pTemplate"></p>
 
+    <?php
+
+      // Runs functions if user clicks either 'Random' or whatever's listed in 'Most popular'
+      if(isset($_POST['rand'])){
+        func::setDisplayPref('rand');
+      }else if(isset($_POST['mostPop'])){
+        func::setDisplayPref('mostPop');
+      }
+
+    ?>
 
     <script src="js/main.js"></script>
     <script>
+      // I should probably do some ajax calls instead of this. Somehow.
       var categoryJSON = <?php echo $categoryJSON ?>;
+      var mostPop = <?php echo $mostPop ?>;
       var cardJSON = <?php echo $cardJSON ?>;
-      appendCategories(categoryJSON);
+      var pref = <?php echo $pref ?>;
+      appendCategories(categoryJSON, mostPop);
       appendCards(cardJSON);
     </script>
   </body>

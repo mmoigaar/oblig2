@@ -2,33 +2,6 @@
 
 class func{
 
-  // Checks if visitor is logged in. Sets cookie no cookie exists.
-  public static function checkLoginState(){
-
-    /*
-      TO DO:
-      * Figure out how to increase cookie lifespan on each login
-    */
-
-    // Check if logged in
-    if(!isset($_SESSION['user'])){
-      // if not logged in, set guest cookie if no cookie exists
-      if(!isset($_COOKIE['user'])){
-        setcookie('user', 'guest', time()+25);
-        $_COOKIE['displayPrefs'] = [];
-      }
-    }else{
-      //If logged in, set user cookie if no cookie exists. If guest cookie exists, overwrite.
-      if(!isset($_COOKIE['user'])){
-        setcookie('user', $_SESSION['user'], time()+25);
-        $_COOKIE['displayPrefs'] = [];
-      }else if($_COOKIE['user'] != $_SESSION['user']){
-        $_COOKIE['user'] = $_SESSION['user'];
-      }
-    }
-    //echo $_COOKIE['user'];
-  }
-
   // Database connection. Call this for every function where SQL queries are required.
   public static function connectToDB(){
     $host = 'localhost';
@@ -44,6 +17,47 @@ class func{
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
     return $pdo;
   }
+
+  // Checks if visitor is logged in. Sets cookie no cookie exists.
+  public static function checkLoginState(){
+
+    // Check if logged in
+    if(!isset($_SESSION['user'])){
+      // if not logged in, set guest cookie if no cookie exists
+      if(!isset($_COOKIE['user'])){
+        setcookie('user', 'guest', time()+1000000);
+      }
+    }else{
+      //If logged in, set user cookie if no cookie exists. If guest cookie exists, overwrite.
+      if(!isset($_COOKIE['user'])){
+        setcookie('user', $_SESSION['user'], time()+1000000);
+      }else if($_COOKIE['user'] != $_SESSION['user']){
+        $_COOKIE['user'] = $_SESSION['user'];
+      }
+    }
+    //echo $_COOKIE['user'];
+  }
+
+  // This runs if visitor clicked "rand" or "Most Popular"
+  // Stores displayPrefs to whichever was clicked last, if any.
+  public static function setDisplayPref($pref){
+    // Sets cookie if nonexisting
+    if(!isset($_COOKIE['displayPrefs'])){
+      setcookie('displayPrefs', $pref, time()+1000000);
+    }
+    // Changes cookie value
+    $_COOKIE['displayPrefs'] = $pref;
+  }
+
+  // Checks if cookie value is set
+  public static function checkDisplayPref(){
+    if(isset($_COOKIE['displayPrefs'])){
+      return $_COOKIE['displayPrefs'];
+    }else{
+      return "none";
+    }
+  }
+
 
   public static function login($user, $pass){
     $pdo = func::connectToDB();
@@ -173,6 +187,7 @@ class func{
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $json = json_encode($results);
+
     return $json;
 
 
@@ -225,6 +240,56 @@ class func{
     return $json;
   } // End function getEntries
   */
+
+
+  public static function mostPop(){
+    $pdo = func::connectToDB();
+
+    // Selects title of entries from the past week
+    $sql =
+      'SELECT title
+       FROM entries
+       WHERE submission_date BETWEEN date_sub(now(),INTERVAL 1 WEEK) and now()';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_NUM);
+
+    // Selects resulting entries' categories from category_entries
+    $sql =
+      'SELECT category
+       FROM category_entries
+       WHERE entry = '.'"'.$results[0][0].'"';
+
+    if(count($results) > 1){
+      for($i = 1; $i < count($results); $i++){
+        $sql .= ' OR entry = "'.$results[$i][0].'"';
+      }
+    }
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $catArray = [];
+    // appends category title to array 'catArray' for each occurence
+    foreach($results as $cat){
+      array_push($catArray, $cat['category']);
+    }
+
+    // Counts the number of occurences for each category title
+    $catArray = array_count_values($catArray);
+
+    // Sorts resulting array by most occurences
+    arsort($catArray);
+
+    // Gets the value of the first element in the array
+    $mostPopular = array_slice(array_keys($catArray), 0, 1, true)[0];
+
+    return $mostPopular;
+
+  }
+
 
   // Gets unique entries and adds "classes" index with all relevant classes for each entry. Returns final result as JSON data.
   public static function getEntries(){

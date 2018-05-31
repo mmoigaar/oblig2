@@ -1,19 +1,38 @@
-function appendCategories(json){
+
+var categories = [];
+
+function appendCategories(json, currentMostPop){
+
+
+  // Appends mostPop div to #mostPop
+  var tmpl = $('#categoryTemplate').clone();
+  tmpl.removeAttr('id');
+  tmpl.find('h3').html(currentMostPop);
+  tmpl.attr('role', 'button');
+  tmpl.attr('onclick', 'displayChoice("' + currentMostPop + '")');
+
+  $('#mostPop').append(tmpl);
 
   for(i = 0; i < json.length; i++){
 
-    var tmpl = $('#categoryTemplate').clone();
-    tmpl.removeAttr('id');
-    tmpl.find('h3').html(json[i].title);
-    tmpl.attr('role', 'button');
-    tmpl.attr('onclick', 'displayChoice("' + json[i].title + '")');
+    // Appends category title to categories array for use in displayChoice
+    categories.push(json[i].title);
 
-    $('#categoriesContainer').append(tmpl);
+    // Appends rest of category divs if they don't have the same title as mostPop
+    if(json[i].title != mostPop){
+      var tmpl = $('#categoryTemplate').clone();
+      tmpl.removeAttr('id');
+      tmpl.find('h3').html(json[i].title);
+      tmpl.attr('role', 'button');
+      tmpl.attr('onclick', 'displayChoice("' + json[i].title + '")');
+
+      $('#categoriesContainer').append(tmpl);
+    }
   }
 }// End function Categories
 
 function appendCards(json){
-  console.log(json);
+
   for(i = 0; i < json.length; i++){
 
     var tmpl = $('#cardTemplate').clone();
@@ -40,10 +59,25 @@ function appendCards(json){
 
     $('#cardContainer').append(tmpl);
   }
+
+  // Calls displayChoice to display random category after all cards are appended, unless preference is set to mostPop.
+  if(pref == 'mostPop'){
+    displayChoice(mostPop);
+  }else{
+    displayChoice('rand');
+  }
 }// End function appendCards
 
 
 function displayChoice(category){
+
+  // Gets random element from the categories array
+  if(category == 'rand'){
+    category = categories[Math.floor(Math.random() * categories.length)];
+  }
+
+  //There should also be some text above cards which shows which category is being displayed. "Showing entries for "+category
+
   var entries = $('.entryCard');
 
   entries.addClass('hide');
