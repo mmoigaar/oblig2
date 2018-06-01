@@ -38,26 +38,6 @@
       <div id="content" class="w100 flex">
 
         <div id="sidebar" class="pink">
-          <div id="categoriesContainer">
-
-            <h2>Categories</h2>
-            <hr/>
-
-            <div class="category" onclick="displayChoice('All')">
-              <h3 class="blue">Show all</h3>
-            </div>
-
-            <!-- This has to be form submitted name='rand'-->
-            <div class="category" onclick="displayChoice('rand')">
-              <h3 class="blue">Random</h3>
-            </div>
-
-            <!-- This has to be form submitted name='mostPop'-->
-            <div id="mostPop" class="orange">
-              <h3>Most popular this week:</h3>
-            </div>
-
-          </div>
           <?php
             if(isset($_SESSION['user'])){
               echo '
@@ -70,6 +50,26 @@
               }
             }
           ?>
+          <div id="categoriesContainer">
+
+            <h2>Categories</h2>
+            <hr/>
+
+            <div class="category blue" onclick="displayChoice('All')">
+              <h3>Show all</h3>
+            </div>
+
+            <!-- This has to be form submitted name='rand'-->
+            <div class="category blue" onclick="displayChoice('rand')">
+              <h3>Random</h3>
+            </div>
+
+            <!-- This has to be form submitted name='mostPop'-->
+            <div id="mostPop" class="orange">
+              <h3>Most popular this week:</h3>
+            </div>
+
+          </div>
         </div>
 
         <div id="cardContainer" class="w100">
@@ -84,8 +84,8 @@
 
     <!-- Templates ---------------------------------------------------->
 
-    <div id="categoryTemplate" class="category categoryItem">
-      <h3 class="blue"></h3>
+    <div id="categoryTemplate" class="category categoryItem blue">
+      <h3></h3>
     </div>
 
 

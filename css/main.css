@@ -86,9 +86,12 @@ header h1{
   text-align: center;
 }
 #topOfCards{
-  min-height: 100px;
+  min-height: 50px;
   width: 80%;
   font-size: 1.2rem;
+  line-height: 3rem;
+  padding: 5px;
+  padding-left: 15px;
   margin-bottom: 50px;
 }
 #categoryTemplate, #cardTemplate, #pTemplate{
@@ -97,12 +100,19 @@ header h1{
 #mostPop{
   margin-top: 20px;
   margin-bottom: 20px;
-  padding: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .category{
-  width: 100%;
+  width: 90%;
+  height: 50px;
+  border: 2px solid transparent;
+  line-height: 3rem;
   margin: 0 auto;
   margin-top: 10px;
+}
+.category:hover{
+  border: 2px solid black;
 }
 
 .entryCard{
@@ -110,6 +120,9 @@ header h1{
   height: 200px;
   padding: 15px;
   margin-bottom: 25px;
+}
+.cardSection{
+  padding: 5px;
 }
 .deleteEntry{
   width: 50px;
@@ -124,6 +137,7 @@ header h1{
   width: 80%;
   font-size: 1.2rem;
   margin-top: 15px;
+  margin-bottom: 15px;
 }
 .title{
   height: 20%;

@@ -28,7 +28,7 @@
       <div id="content" class="w100">
         <div id="cardContainer" class="w100">
           <div id="topOfCards" class="block blue">
-            <h3></h3>
+            <h3>Your entries</h3>
           </div>
         </div>
 
