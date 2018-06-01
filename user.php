@@ -26,12 +26,13 @@
     <div id="main" class="flex">
 
       <div id="content" class="w100">
-
-        <div id="search" class="w100 blue taCenter">
-          <h1>Some nice control panel things</h1>
+        <div id="cardContainer" class="w100">
+          <div id="topOfCards" class="block blue">
+            <h3></h3>
+          </div>
         </div>
 
-        <div id="cardContainer" class="w100"></div>
+        </div>
       </div>
 
     </div>
@@ -39,7 +40,7 @@
     <script src="js/main.js"></script>
     <script>
       var json = <?php echo $json ?>;
-      appendCards(json);
+      appendCards('user', json);
     </script>
   </body>
 </html>

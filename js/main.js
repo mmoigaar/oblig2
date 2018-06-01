@@ -31,14 +31,14 @@ function appendCategories(json, currentMostPop){
   }
 }// End function Categories
 
-function appendCards(json){
+function appendCards(page, json){
 
   for(i = 0; i < json.length; i++){
 
     var tmpl = $('#cardTemplate').clone();
     tmpl.removeAttr('id');
 
-    if(typeof(json[i].classes).isArray){
+    if(page == 'home'){
 
       for(j = 0; j < json[i].classes.length; j++){
         console.log(json[i].classes[j]);
@@ -61,10 +61,12 @@ function appendCards(json){
   }
 
   // Calls displayChoice to display random category after all cards are appended, unless preference is set to mostPop.
-  if(pref == 'mostPop'){
-    displayChoice(mostPop);
-  }else{
-    displayChoice('rand');
+  if(page == 'home'){
+    if(pref == 'mostPop'){
+      displayChoice(mostPop);
+    }else{
+      displayChoice('rand');
+    }
   }
 }// End function appendCards
 
@@ -82,9 +84,11 @@ function displayChoice(category){
 
   entries.addClass('hide');
 
-  if(category == 'showAll'){
+  if(category == 'All'){
     entries.removeClass('hide');
   }else{
     $('#cardContainer').find('.'+category).removeClass('hide');
   }
+
+  $('#topOfCards h3').html('Displaying entries for category: '+category);
 }// End function displayChoice

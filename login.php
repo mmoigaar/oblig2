@@ -12,7 +12,6 @@
   </head>
   <body>
     <?php
-      include 'functions.php';
       include 'include/header.php';
     ?>
 

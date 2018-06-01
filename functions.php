@@ -14,7 +14,7 @@ class func{
 
     // Create a PDO instance
     $pdo = new PDO($dsn, $user, $password);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     return $pdo;
   }
 
@@ -36,7 +36,8 @@ class func{
       }
     }
     //echo $_COOKIE['user'];
-  }
+  } // End function checkLoginState
+
 
   // This runs if visitor clicked "rand" or "Most Popular"
   // Stores displayPrefs to whichever was clicked last, if any.
@@ -56,7 +57,7 @@ class func{
     }else{
       return "none";
     }
-  }
+  } // End function setDisplayPref
 
 
   public static function login($user, $pass){
@@ -66,7 +67,7 @@ class func{
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$user]);
-    $results = $stmt->fetchAll();
+    $results = $stmt->fetchAll(PDO::FETCH_OBJ); //CHANGE THIS YO
 
     var_dump($results);
     foreach($results as $result){
@@ -77,7 +78,7 @@ class func{
         header('location:index.php');
       }
     }
-  }
+  } // End function login
 
   public static function register($user, $pass, $email){
     $pdo = func::connectToDB();
@@ -86,7 +87,7 @@ class func{
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$user]);
-    $results = $stmt->fetchAll();
+    $results = $stmt->fetchAll(PDO::FETCH_OBJ); //CHANGE THIS YO
 
     $existing = false;
 
@@ -111,7 +112,8 @@ class func{
     }else{
       echo "Username already exists, probably";
     }
-  }
+  } // End function register
+
   // This first inserts entry, then categories, then category_entry
 
   // Alternatively I can do some object relational mapping if I cba learning it
@@ -184,12 +186,11 @@ class func{
        FROM categories';
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $results = $stmt->fetchAll();
 
     $json = json_encode($results);
 
     return $json;
-
 
   }
 
@@ -217,7 +218,7 @@ class func{
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $results = $stmt->fetchAll();
 
     $sql =
       'SELECT DISTINCT title, content, context
@@ -232,7 +233,7 @@ class func{
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $results = $stmt->fetchAll();
 
     $json = json_encode($results);
     //echo $json;
@@ -269,7 +270,7 @@ class func{
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $results = $stmt->fetchAll();
 
     $catArray = [];
     // appends category title to array 'catArray' for each occurence
@@ -301,7 +302,7 @@ class func{
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    $ca_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $ca_results = $stmt->fetchAll();
 
     $sql =
       'SELECT DISTINCT title, content, context
@@ -309,7 +310,7 @@ class func{
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    $entry_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $entry_results = $stmt->fetchAll();
 
     for($i=0; $i < count($entry_results); $i++){
 
@@ -335,12 +336,73 @@ class func{
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $results = $stmt->fetchAll();
 
     $json = json_encode($results);
     return $json;
 
   } // End function listOwnEntries
+
+
+  // Deletes entry
+  public static function deleteEntry($entry){
+    $pdo = func::connectToDB();
+
+    $sql =
+      'DELETE *
+       FROM entries
+       WHERE title = "'.$entry.'"';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+
+  } // End function deleteEntry
+
+
+  // Admin only: deletes category and all rows from other tables which reference that category
+  public static function deleteCategory($category){
+    $pdo = func::connectToDB();
+    /*
+    $sql =
+      'DELETE *
+       FROM entries
+       WHERE title = "'.$category.'"';
+    */ // Add "ON DELETE CASCADE" to all tables referencing category
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+
+  } // End function deleteCategory
+
+  // Admin only: deletes user and all rows from other tables which reference that user
+  public static function deleteUser($user){
+    $pdo = func::connectToDB();
+
+    /*
+    $sql =
+      'DELETE *
+       FROM users
+       WHERE username = "'.$user.'"';
+    */ // Add "ON DELETE CASCADE" to all tables referencing user
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll();
+
+  } // End function deleteUser
+
+  // Deletes ANYTHING (NOT SURE IF THIS WORKS)
+  public static function deleteRow($table, $column, $toDelete){
+    $pdo = func::connectToDB();
+
+    $sql =
+      'DELETE *
+       FROM '.$table.'
+       WHERE '.$column.' = "'.$toDelete.'"';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+
+  } // End function deleteRow
+
 }
 
 ?>

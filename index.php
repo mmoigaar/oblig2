@@ -14,9 +14,17 @@
     <?php
       session_start();
       include 'functions.php';
+      /*
+      include 'classes/Category.php';
+      include 'classes/Entry.php';
+      include 'User.php';
+      include 'classes/Admin.php';
+      */
       func::checkLoginState();
+
       include 'include/header.php';
       include 'include/cardTemplates.php';
+
 
       $categoryJSON = func::getCategories();
       $cardJSON = func::getEntries();
@@ -26,9 +34,6 @@
     ?>
 
     <div id="main">
-      <div id="search" class="w100 blue">
-        <h1>No idea if you're logged in, yo. Check icon.</h1>
-      </div>
 
       <div id="content" class="w100 flex">
 
@@ -38,7 +43,7 @@
             <h2>Categories</h2>
             <hr/>
 
-            <div class="category" onclick="displayChoice('showAll')">
+            <div class="category" onclick="displayChoice('All')">
               <h3 class="blue">Show all</h3>
             </div>
 
@@ -53,9 +58,25 @@
             </div>
 
           </div>
+          <?php
+            if(isset($_SESSION['user'])){
+              echo '
+              <form method="post">
+                <button id="submit" name="submit" type="submit">Submit entry</button>
+              </form>
+              ';
+              if(isset($_POST['submit'])){
+                header('location:submit.php');
+              }
+            }
+          ?>
         </div>
 
-        <div id="cardContainer" class="w100"></div>
+        <div id="cardContainer" class="w100">
+          <div id="topOfCards" class="block blue">
+            <h3></h3>
+          </div>
+        </div>
 
       </div>
 
@@ -89,7 +110,7 @@
       var cardJSON = <?php echo $cardJSON ?>;
       var pref = <?php echo $pref ?>;
       appendCategories(categoryJSON, mostPop);
-      appendCards(cardJSON);
+      appendCards('home', cardJSON);
     </script>
   </body>
 </html>
