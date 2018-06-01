@@ -15,32 +15,37 @@
       session_start();
       include 'functions.php';
       include 'include/header.php';
-      include 'include/userCards.php';
 
       if(isset($_SESSION['user'])){
-        $json = func::listOwnEntries($_SESSION['user']);
+        //This should be !isset and check for userType admin, then kick that motherfucker out if enum!=admin
       }else{
         header('location:login.php');
       }
     ?>
-    <div id="main" class="flex">
+    <div id="main">
 
-      <div id="content" class="w100">
-        <div id="cardContainer" class="w100">
-          <div id="topOfCards" class="block blue w80">
-            <h3>Your entries</h3>
-          </div>
+      <div id="content" class="w100 flex">
+
+      <div id="sidebar" class="pink"></div>
+
+      <div class="w80">
+
+        <div id="topOfCards" class="block blue">
+          <h3>Admin dashboard</h3>
+        </div>
+        <div id="loadAdminChoice" class="block blue">
+
         </div>
 
-        </div>
       </div>
+    </div>
 
     </div>
 
     <script src="js/main.js"></script>
     <script>
-      var json = <?php echo $json ?>;
-      appendCards('user', json);
+      //var json = <?php echo $json ?>;
+      //appendCards('user', json);
     </script>
   </body>
 </html>

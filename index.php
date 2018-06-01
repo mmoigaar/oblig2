@@ -73,7 +73,7 @@
         </div>
 
         <div id="cardContainer" class="w100">
-          <div id="topOfCards" class="block blue">
+          <div id="topOfCards" class="block blue w80">
             <h3></h3>
           </div>
         </div>

@@ -35,7 +35,9 @@
 .w100{
   width: 100%;
 }
-
+.w80{
+  width: 80%;
+}
 .w45{
   width: 45%;
 }
@@ -87,7 +89,6 @@ header h1{
 }
 #topOfCards{
   min-height: 50px;
-  width: 80%;
   font-size: 1.2rem;
   line-height: 3rem;
   padding: 5px;
