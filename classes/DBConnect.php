@@ -1,6 +1,6 @@
 <?php
 
-class Func{
+class DBConnect{
 
   public $pdo;
 

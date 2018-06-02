@@ -1,7 +1,7 @@
 <?php
-  require_once('Func.php');
+  require_once('DBConnect.php');
 
-  class Category extends Func{
+  class Category extends DBConnect{
 
     public function getCategories(){
       $pdo = $this->pdo;
@@ -15,7 +15,7 @@
 
       $json = json_encode($results);
 
-      return $json;
+      echo $json;
 
     }
 
@@ -63,7 +63,7 @@
       // Gets the value of the first element in the array
       $mostPopular = array_slice(array_keys($catArray), 0, 1, true)[0];
 
-      return $mostPopular;
+      echo $mostPopular;
 
     }
 

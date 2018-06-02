@@ -1,7 +1,7 @@
 <?php
-require_once('Func.php');
+require_once('DBConnect.php');
 
-class Entry extends Func{
+class Entry extends DBConnect{
 
   // Gets unique entries and adds "classes" index with all relevant classes for each entry. Returns final result as JSON data.
   public function getEntries(){
@@ -34,7 +34,7 @@ class Entry extends Func{
       }
     }
     $json = json_encode($entry_results);
-    return $json;
+    echo $json;
   } // End function getEntries
 
 }

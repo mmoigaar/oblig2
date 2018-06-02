@@ -5,18 +5,13 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <!--
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-  -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="shortcut icon" href="">
   </head>
   <body>
     <?php
       session_start();
-      include 'classes/Category.php';
-      include 'classes/Entry.php';
       include 'classes/User.php';
-      include 'classes/Admin.php';
 
       $user = new User();
       $user->checkLoginState();
@@ -24,16 +19,6 @@
       include 'include/header.php';
       include 'include/cardTemplates.php';
 
-
-      $category = new Category();
-      $categoryJSON = $category->getCategories();
-
-      $entry = new Entry();
-      $cardJSON = $entry->getEntries();
-
-      $mostPop = '"'.$category->mostPop().'"';
-
-      $pref = '"'.$user->checkDisplayPref().'"';
 
     ?>
 
@@ -98,23 +83,15 @@
     <?php
 
       // Runs functions if user clicks either 'Random' or whatever's listed in 'Most popular'
+      /*
       if(isset($_POST['rand'])){
         $user->setDisplayPref('rand');
       }else if(isset($_POST['mostPop'])){
         $user->setDisplayPref('mostPop');
       }
-
+*/
     ?>
 
     <script src="js/main.js"></script>
-    <script>
-      // I should probably do some ajax calls instead of this. Somehow.
-      var categoryJSON = <?php echo $categoryJSON ?>;
-      var mostPop = <?php echo $mostPop ?>;
-      var cardJSON = <?php echo $cardJSON ?>;
-      var pref = <?php echo $pref ?>;
-      appendCategories(categoryJSON, mostPop);
-      appendCards('home', cardJSON);
-    </script>
   </body>
 </html>

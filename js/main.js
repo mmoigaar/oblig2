@@ -1,8 +1,86 @@
-
 var categories = [];
 
-function appendCategories(json, currentMostPop){
+var categoryJSON;
+var mostPop;
+var entryJSON;
+var displayPref;
 
+var catSet = false;
+var popSet = false;
+
+$(document).ready(function(){
+
+  // Posts 'getCategories' to the index controller
+  $.ajax({ url: 'controllers/index.php',
+           data: {action: 'getCategories'},
+           type: 'post',
+           success: function(output) {
+             //callback function stores global var
+             callback('categories', JSON.parse(output));
+           }
+  });
+
+  // Posts 'mostPop' to the index controller
+  $.ajax({ url: 'controllers/index.php',
+           data: {action: 'mostPop'},
+           type: 'post',
+           success: function(output) {
+             //callback function stores global var
+             callback('mostPop', output);
+           }
+  });
+
+  // Posts 'checkDisplayPref' to the index controller
+  $.ajax({ url: 'controllers/index.php',
+           data: {action: 'checkDisplayPref'},
+           type: 'post',
+           success: function(output) {
+             //callback function stores global var
+             callback('displayPref', output);
+           }
+  });
+
+  // Posts 'getEntries' to the index controller
+  $.ajax({ url: 'controllers/index.php',
+           data: {action: 'getEntries'},
+           type: 'post',
+           success: function(output) {
+             //callback function stores global var
+             callback('entries', JSON.parse(output));
+           }
+  });
+
+});
+
+function callback(source, output){
+
+  switch(source){
+    case 'categories':
+      categoryJSON = output;
+      catSet = true;
+      break;
+
+    case 'mostPop':
+      mostPop = output;
+      popSet = true;
+      if(catSet == true && popSet == true){
+        appendCategories(categoryJSON, mostPop);
+      }
+      break;
+
+    case 'displayPref':
+      displayPref = output;
+
+      break;
+
+    case 'entries':
+      entryJSON = output;
+      appendCards('home', entryJSON);
+      break;
+  }
+}
+
+function appendCategories(json, currentMostPop){
 
   // Appends mostPop div to #mostPop
   var tmpl = $('#categoryTemplate').clone();
@@ -41,7 +119,6 @@ function appendCards(page, json){
     if(page == 'home'){
 
       for(j = 0; j < json[i].classes.length; j++){
-        console.log(json[i].classes[j]);
         tmpl.addClass(json[i].classes[j]);
 
         tmpl.find('.categories').find('p').html(
@@ -60,14 +137,16 @@ function appendCards(page, json){
     $('#cardContainer').append(tmpl);
   }
 
+
   // Calls displayChoice to display random category after all cards are appended, unless preference is set to mostPop.
   if(page == 'home'){
-    if(pref == 'mostPop'){
+    if(displayPref == 'mostPop'){
       displayChoice(mostPop);
     }else{
       displayChoice('rand');
     }
   }
+
 }// End function appendCards
 
 
@@ -77,8 +156,6 @@ function displayChoice(category){
   if(category == 'rand'){
     category = categories[Math.floor(Math.random() * categories.length)];
   }
-
-  //There should also be some text above cards which shows which category is being displayed. "Showing entries for "+category
 
   var entries = $('.entryCard');
 

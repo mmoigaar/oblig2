@@ -1,11 +1,11 @@
 <?php
-require_once('Func.php');
+require_once('DBConnect.php');
 
-class Admin extends Func{
+class Admin extends DBConnect{
 
   // Admin only: deletes category and all rows from other tables which reference that category
   public function deleteCategory($category){
-    $pdo = func::connectToDB();
+    $pdo = $this->pdo;
     /*
     $sql =
       'DELETE *
@@ -19,7 +19,7 @@ class Admin extends Func{
 
   // Admin only: deletes user and all rows from other tables which reference that user
   public function deleteUser($user){
-    $pdo = func::connectToDB();
+    $pdo = $this->pdo;
 
     /*
     $sql =

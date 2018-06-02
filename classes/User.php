@@ -1,7 +1,7 @@
 <?php
-require_once('Func.php');
+require_once('DBConnect.php');
 
-class User extends Func{
+class User extends DBConnect{
 
   // Checks if visitor is logged in. Sets cookie no cookie exists.
   public function checkLoginState(){
@@ -37,9 +37,11 @@ class User extends Func{
   // Checks if cookie value is set
   public function checkDisplayPref(){
     if(isset($_COOKIE['displayPrefs'])){
-      return $_COOKIE['displayPrefs'];
+
+      // Why the motherfuck is this the only one that gets echoed on screen
+      echo $_COOKIE['displayPrefs'];
     }else{
-      return "none";
+      echo "none";
     }
   } // End function setDisplayPref
 
