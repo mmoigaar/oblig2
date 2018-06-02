@@ -10,6 +10,8 @@ var popSet = false;
 
 $(document).ready(function(){
 
+
+
   // Posts 'getCategories' to the index controller
   $.ajax({ url: 'controllers/index.php',
            data: {action: 'getCategories'},

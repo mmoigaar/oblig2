@@ -48,6 +48,26 @@
       $stmt->execute();
       $results = $stmt->fetchAll();
 
+      /* DO THIS THING INSTEAD OBV, BUT ONLY WHEN AJAX WORKS =)=)=)=)=)
+      // Selects resulting entries' categories from category_entries
+      $sql =
+        'SELECT category
+         FROM category_entries
+         WHERE entry = ?';
+
+      $execute = [$results[0][0]];
+      if(count($results) > 1){
+        for($i = 1; $i < count($results); $i++){
+          $sql .= ' OR entry = ?';
+          $execute[] = $results[$i][0];
+        }
+      }
+
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute($execute);
+      $results = $stmt->fetchAll();
+    */
+
       $catArray = [];
       // appends category title to array 'catArray' for each occurence
       foreach($results as $cat){
@@ -66,21 +86,6 @@
       echo $mostPopular;
 
     }
-
-    // Admin only: deletes category and all rows from other tables which reference that category
-    public function deleteCategory($category){
-      $pdo = $this->pdo;
-      /*
-      $sql =
-        'DELETE *
-         FROM entries
-         WHERE title = "'.$category.'"';
-      */ // Add "ON DELETE CASCADE" to all tables referencing category
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute();
-
-    } // End function deleteCategory
-
   }
 
 ?>
