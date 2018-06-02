@@ -1,10 +1,11 @@
 <?php
+require_once('Func.php');
 
-class Entry{
+class Entry extends Func{
 
   // Gets unique entries and adds "classes" index with all relevant classes for each entry. Returns final result as JSON data.
-  public static function getEntries(){
-    $pdo = func::connectToDB();
+  public function getEntries(){
+    $pdo = $this->pdo;
 
     $sql =
       'SELECT *

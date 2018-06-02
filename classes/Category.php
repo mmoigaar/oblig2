@@ -1,9 +1,10 @@
 <?php
+  require_once('Func.php');
 
-  class Category{
+  class Category extends Func{
 
-    public static function getCategories(){
-      $pdo = func::connectToDB();
+    public function getCategories(){
+      $pdo = $this->pdo;
 
       $sql =
         'SELECT title
@@ -18,8 +19,8 @@
 
     }
 
-    public static function mostPop(){
-      $pdo = func::connectToDB();
+    public function mostPop(){
+      $pdo = $this->pdo;
 
       // Selects title of entries from the past week
       $sql =
@@ -67,8 +68,8 @@
     }
 
     // Admin only: deletes category and all rows from other tables which reference that category
-    public static function deleteCategory($category){
-      $pdo = func::connectToDB();
+    public function deleteCategory($category){
+      $pdo = $this->pdo;
       /*
       $sql =
         'DELETE *

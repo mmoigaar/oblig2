@@ -1,9 +1,10 @@
 <?php
+require_once('Func.php');
 
-class Admin{
+class Admin extends Func{
 
   // Admin only: deletes category and all rows from other tables which reference that category
-  public static function deleteCategory($category){
+  public function deleteCategory($category){
     $pdo = func::connectToDB();
     /*
     $sql =
@@ -17,7 +18,7 @@ class Admin{
   } // End function deleteCategory
 
   // Admin only: deletes user and all rows from other tables which reference that user
-  public static function deleteUser($user){
+  public function deleteUser($user){
     $pdo = func::connectToDB();
 
     /*

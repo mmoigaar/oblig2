@@ -38,7 +38,9 @@
         $context = htmlentities($_POST['context']);
         $categories = str_getcsv(htmlentities($_POST['categories']));
 
-        include_once 'functions.php';
+        require_once('classes/Entry.php');
+
+        
         Entry::submit($title, $author, $description, $context, $categories);
       }
     ?>

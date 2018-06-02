@@ -13,9 +13,8 @@
   <body>
     <?php
       session_start();
-      include 'functions.php';
       include 'classes/User.php';
-      
+
       include 'include/header.php';
       include 'include/userCards.php';
 

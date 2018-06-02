@@ -1,9 +1,10 @@
 <?php
+require_once('Func.php');
 
-class User{
+class User extends Func{
 
   // Checks if visitor is logged in. Sets cookie no cookie exists.
-  public static function checkLoginState(){
+  public function checkLoginState(){
 
     // Check if logged in
     if(!isset($_SESSION['user'])){
@@ -24,7 +25,7 @@ class User{
 
   // Stores displayPrefs to whichever was clicked last, if any.
   // This runs if visitor clicked "rand" or "Most Popular"
-  public static function setDisplayPref($pref){
+  public function setDisplayPref($pref){
     // Sets cookie if nonexisting
     if(!isset($_COOKIE['displayPrefs'])){
       setcookie('displayPrefs', $pref, time()+1000000);
@@ -34,7 +35,7 @@ class User{
   }
 
   // Checks if cookie value is set
-  public static function checkDisplayPref(){
+  public function checkDisplayPref(){
     if(isset($_COOKIE['displayPrefs'])){
       return $_COOKIE['displayPrefs'];
     }else{
@@ -42,8 +43,8 @@ class User{
     }
   } // End function setDisplayPref
 
-  public static function login($user, $pass){
-    $pdo = func::connectToDB();
+  public function login($user, $pass){
+    $pdo = $this->pdo;
 
     $sql = 'SELECT * FROM users WHERE username = ?';
 
@@ -62,8 +63,8 @@ class User{
     }
   } // End function login
 
-  public static function register($user, $pass, $email){
-    $pdo = func::connectToDB();
+  public function register($user, $pass, $email){
+    $pdo = $this->pdo;
 
     $sql = 'SELECT * FROM users WHERE username = ?';
 
@@ -99,8 +100,8 @@ class User{
   // This first inserts entry, then categories, then category_entry
 
   // Alternatively I can do some object relational mapping if I cba learning it
-  public static function submit($title, $author, $content, $context, $categories){
-    $pdo = func::connectToDB();
+  public function submit($title, $author, $content, $context, $categories){
+    $pdo = $this->pdo;
 
     // Entry insert things
     $sql = 'SELECT * FROM entries WHERE title = ?';
@@ -160,8 +161,8 @@ class User{
     }
   }
 
-  public static function listOwnEntries($user){
-    $pdo = func::connectToDB();
+  public function listOwnEntries($user){
+    $pdo = $this->pdo;
 
     $sql =
       'SELECT *

@@ -13,21 +13,27 @@
   <body>
     <?php
       session_start();
-      include 'functions.php';
       include 'classes/Category.php';
       include 'classes/Entry.php';
       include 'classes/User.php';
       include 'classes/Admin.php';
-      User::checkLoginState();
+
+      $user = new User();
+      $user->checkLoginState();
 
       include 'include/header.php';
       include 'include/cardTemplates.php';
 
 
-      $categoryJSON = Category::getCategories();
-      $cardJSON = Entry::getEntries();
-      $mostPop = '"'.Category::mostPop().'"';
-      $pref = '"'.User::checkDisplayPref().'"';
+      $category = new Category();
+      $categoryJSON = $category->getCategories();
+
+      $entry = new Entry();
+      $cardJSON = $entry->getEntries();
+
+      $mostPop = '"'.$category->mostPop().'"';
+
+      $pref = '"'.$user->checkDisplayPref().'"';
 
     ?>
 
@@ -93,9 +99,9 @@
 
       // Runs functions if user clicks either 'Random' or whatever's listed in 'Most popular'
       if(isset($_POST['rand'])){
-        func::setDisplayPref('rand');
+        $user->setDisplayPref('rand');
       }else if(isset($_POST['mostPop'])){
-        func::setDisplayPref('mostPop');
+        $user->setDisplayPref('mostPop');
       }
 
     ?>

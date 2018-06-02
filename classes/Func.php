@@ -1,9 +1,11 @@
 <?php
 
-class func{
+class Func{
+
+  public $pdo;
 
   // Database connection. Call this for every function where SQL queries are required.
-  public static function connectToDB(){
+  public function __construct(){
     $host = 'localhost';
     $user = 'root';
     $password = '';
@@ -15,7 +17,8 @@ class func{
     // Create a PDO instance
     $pdo = new PDO($dsn, $user, $password);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    return $pdo;
+
+    $this->pdo = $pdo;
   }
 }
 
