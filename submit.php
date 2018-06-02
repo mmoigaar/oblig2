@@ -39,7 +39,7 @@
         $categories = str_getcsv(htmlentities($_POST['categories']));
 
         include_once 'functions.php';
-        func::submit($title, $author, $description, $context, $categories);
+        Entry::submit($title, $author, $description, $context, $categories);
       }
     ?>
   </body>

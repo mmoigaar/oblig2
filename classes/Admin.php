@@ -13,7 +13,7 @@ class Admin{
     // Add "ON DELETE CASCADE" to all tables referencing category
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    */ 
+    */
   } // End function deleteCategory
 
   // Admin only: deletes user and all rows from other tables which reference that user

@@ -42,7 +42,8 @@
         $login_pass = htmlentities($_POST['existingPass']);
 
         include_once 'functions.php';
-        func::login($login_user, $login_pass);
+        include 'classes/User.php';
+        User::login($login_user, $login_pass);
       }
 
       if(isset($_POST['register'])){
@@ -51,7 +52,8 @@
         $email = htmlentities($_POST['email']);
 
         include_once 'functions.php';
-        func::register($new_user, $new_pass, $email);
+        include 'classes/User.php';
+        User::register($new_user, $new_pass, $email);
       }
   ?>
   </body>

@@ -14,22 +14,20 @@
     <?php
       session_start();
       include 'functions.php';
-      /*
       include 'classes/Category.php';
       include 'classes/Entry.php';
-      include 'User.php';
+      include 'classes/User.php';
       include 'classes/Admin.php';
-      */
-      func::checkLoginState();
+      User::checkLoginState();
 
       include 'include/header.php';
       include 'include/cardTemplates.php';
 
 
-      $categoryJSON = func::getCategories();
-      $cardJSON = func::getEntries();
-      $mostPop = '"'.func::mostPop().'"';
-      $pref = '"'.func::checkDisplayPref().'"';
+      $categoryJSON = Category::getCategories();
+      $cardJSON = Entry::getEntries();
+      $mostPop = '"'.Category::mostPop().'"';
+      $pref = '"'.User::checkDisplayPref().'"';
 
     ?>
 

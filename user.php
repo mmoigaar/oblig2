@@ -14,11 +14,13 @@
     <?php
       session_start();
       include 'functions.php';
+      include 'classes/User.php';
+      
       include 'include/header.php';
       include 'include/userCards.php';
 
       if(isset($_SESSION['user'])){
-        $json = func::listOwnEntries($_SESSION['user']);
+        $json = User::listOwnEntries($_SESSION['user']);
       }else{
         header('location:login.php');
       }
