@@ -54,8 +54,6 @@
       $stmt->execute($execute);
       $results = $stmt->fetchAll();
 
-
-
       $catArray = [];
       // appends category title to array 'catArray' for each occurence
       foreach($results as $cat){
