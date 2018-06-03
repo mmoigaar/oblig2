@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <link rel="shortcut icon" href="">
   </head>
   <body>
     <?php
@@ -18,8 +17,6 @@
 
       include 'include/header.php';
       include 'include/cardTemplates.php';
-
-
     ?>
 
     <div id="main">

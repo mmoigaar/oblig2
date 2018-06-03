@@ -5,21 +5,18 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <!--
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-  -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
   </head>
   <body>
     <?php
       session_start();
       include 'classes/User.php';
-
       include 'include/header.php';
       include 'include/userCards.php';
 
       if(isset($_SESSION['user'])){
-        $json = User::listOwnEntries($_SESSION['user']);
+        $user = new User();
+        $json = $user->listOwnEntries($_SESSION['user']);
       }else{
         header('location:login.php');
       }
@@ -38,10 +35,6 @@
 
     </div>
 
-    <script src="js/main.js"></script>
-    <script>
-      var json = <?php echo $json ?>;
-      appendCards('user', json);
-    </script>
+    <script src="js/main.js"> // This runs document ready functions, which includes listing random entries. Can't have that, yo. Make JS files for each files.</script>
   </body>
 </html>

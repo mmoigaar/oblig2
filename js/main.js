@@ -1,59 +1,67 @@
-var categories = [];
-
-var categoryJSON;
-var mostPop;
-var entryJSON;
-var displayPref;
-
-var catSet = false;
-var popSet = false;
-
 $(document).ready(function(){
+  getCategories();
+});
 
-
-
+function getCategories(){
   // Posts 'getCategories' to the index controller
   $.ajax({ url: 'controllers/index.php',
            data: {action: 'getCategories'},
            type: 'post',
            success: function(output) {
-             //callback function stores global var
+             // Callback function stores global var
              callback('categories', JSON.parse(output));
+             // Makes next ajax call once something is returned from current call
+             getMostPop();
            }
   });
-
+}
+function getMostPop(){
   // Posts 'mostPop' to the index controller
   $.ajax({ url: 'controllers/index.php',
            data: {action: 'mostPop'},
            type: 'post',
            success: function(output) {
-             //callback function stores global var
+             // Callback function stores global var
              callback('mostPop', output);
+             // Makes next ajax call once something is returned from current call
+             checkDisplayPref();
            }
   });
-
+}
+function checkDisplayPref(){
   // Posts 'checkDisplayPref' to the index controller
   $.ajax({ url: 'controllers/index.php',
            data: {action: 'checkDisplayPref'},
            type: 'post',
            success: function(output) {
-             //callback function stores global var
+             // Callback function stores global var
              callback('displayPref', output);
+             // Makes next ajax call once something is returned from current call
+             getEntries();
            }
   });
-
+}
+function getEntries(){
   // Posts 'getEntries' to the index controller
   $.ajax({ url: 'controllers/index.php',
            data: {action: 'getEntries'},
            type: 'post',
            success: function(output) {
-             //callback function stores global var
+             // Callback function stores global var
              callback('entries', JSON.parse(output));
            }
   });
+}
 
-});
+// Callback values stored as global vars
+var categoryJSON;
+var mostPop;
+var entryJSON;
+var displayPref;
+var catSet = false;
+var popSet = false;
 
+// Stores callback values as global vars
 function callback(source, output){
 
   switch(source){
@@ -72,7 +80,6 @@ function callback(source, output){
 
     case 'displayPref':
       displayPref = output;
-
       break;
 
     case 'entries':
@@ -82,16 +89,25 @@ function callback(source, output){
   }
 }
 
+var categories = [];
 function appendCategories(json, currentMostPop){
 
-  // Appends mostPop div to #mostPop
-  var tmpl = $('#categoryTemplate').clone();
-  tmpl.removeAttr('id');
-  tmpl.find('h3').html(currentMostPop);
-  tmpl.attr('role', 'button');
-  tmpl.attr('onclick', 'displayChoice("' + currentMostPop + '")');
+  if(!currentMostPop == 'none'){ // Append mostPop wrapper only if != 'none'(THIS NEEDS TO BE DONE)
 
-  $('#mostPop').append(tmpl);
+    // Appends mostPop div to #mostPop
+    var tmpl = $('#categoryTemplate').clone();
+    tmpl.removeAttr('id');
+    tmpl.find('h3').html(currentMostPop);
+    tmpl.attr('role', 'button');
+    tmpl.attr('onclick', 'displayChoice("' + currentMostPop + '")');
+
+    $('#mostPop').append(tmpl);
+  }else{
+    var tmpl = $('#pTemplate').clone();
+    tmpl.removeAttr('id');
+    tmpl.html('No entries this week');
+    $('#mostPop').append(tmpl);
+  }
 
   for(i = 0; i < json.length; i++){
 
@@ -142,7 +158,7 @@ function appendCards(page, json){
 
   // Calls displayChoice to display random category after all cards are appended, unless preference is set to mostPop.
   if(page == 'home'){
-    if(displayPref == 'mostPop'){
+    if(displayPref == 'mostPop' && mostPop != 'none'){
       displayChoice(mostPop);
     }else{
       displayChoice('rand');
@@ -150,7 +166,6 @@ function appendCards(page, json){
   }
 
 }// End function appendCards
-
 
 function displayChoice(category){
 

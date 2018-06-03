@@ -32,23 +32,10 @@
       $stmt->execute();
       $results = $stmt->fetchAll(PDO::FETCH_NUM);
 
-      // Selects resulting entries' categories from category_entries
-      $sql =
-        'SELECT category
-         FROM category_entries
-         WHERE entry = '.'"'.$results[0][0].'"';
-
-      if(count($results) > 1){
-        for($i = 1; $i < count($results); $i++){
-          $sql .= ' OR entry = "'.$results[$i][0].'"';
-        }
+      if(count($results) == 0){
+        echo 'none';
+        die;
       }
-
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute();
-      $results = $stmt->fetchAll();
-
-      /* DO THIS THING INSTEAD OBV, BUT ONLY WHEN AJAX WORKS =)=)=)=)=)
       // Selects resulting entries' categories from category_entries
       $sql =
         'SELECT category
@@ -66,7 +53,8 @@
       $stmt = $pdo->prepare($sql);
       $stmt->execute($execute);
       $results = $stmt->fetchAll();
-    */
+
+
 
       $catArray = [];
       // appends category title to array 'catArray' for each occurence

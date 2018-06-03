@@ -52,17 +52,14 @@ class User extends DBConnect{
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$user]);
-    $results = $stmt->fetchAll();
+    $result = $stmt->fetch();
 
-    var_dump($results);
-    foreach($results as $result){
-      //echo $user->username . '<br>';
-      if($result->username == $user && $result->password == $pass){
-        session_start();
-        $_SESSION['user'] = $user;
-        header('location:index.php');
-      }
+    if($result['username'] == $user && $result['password'] == $pass){
+      session_start();
+      $_SESSION['user'] = $user;
+      header('location:index.php');
     }
+
   } // End function login
 
   public function register($user, $pass, $email){
@@ -72,24 +69,19 @@ class User extends DBConnect{
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$user]);
-    $results = $stmt->fetchAll();
+    $result = $stmt->fetch();
 
     $existing = false;
 
-    foreach($results as $result){
-      if($result->username == $user){
-        $existing = true;
-      }
+    if($result['username'] == $user){
+      $existing = true;
     }
-    if($existing == false){
-      echo "I guess you can register with that information.";
 
+    if($existing == false){
       $sql = 'INSERT INTO users(username, password, email, user_type)
               VALUES(?, ?, ?, "basic")';
       $stmt = $pdo->prepare($sql);
       $stmt->execute([$user, $pass, $email]);
-
-      //Things below this doesn't run
 
       session_start();
       $_SESSION['user'] = $user;
@@ -169,10 +161,10 @@ class User extends DBConnect{
     $sql =
       'SELECT *
        FROM entries
-       WHERE author = "'.$user.'"';
+       WHERE author = ?';
 
     $stmt = $pdo->prepare($sql);
-    $stmt->execute();
+    $stmt->execute([$user]);
     $results = $stmt->fetchAll();
 
     $json = json_encode($results);
