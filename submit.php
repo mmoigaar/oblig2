@@ -38,10 +38,10 @@
         $context = htmlentities($_POST['context']);
         $categories = str_getcsv(htmlentities($_POST['categories']));
 
-        require_once('classes/Entry.php');
+        require_once('classes/User.php');
 
-        
-        Entry::submit($title, $author, $description, $context, $categories);
+        $user = new User();
+        $user->submit($title, $author, $description, $context, $categories);
       }
     ?>
   </body>

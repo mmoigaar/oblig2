@@ -103,8 +103,8 @@ class User extends DBConnect{
     $stmt->execute([$title]);
     $result = $stmt->fetch();
 
-    if(isset($result->title) && $result->title == $title){
-      echo "Existing title: ".$result->title;
+    if(!empty($result['title']) && $result['title'] == $title){
+      echo "Existing title: ".$result['title'];
       die;
     }
     else{
@@ -127,18 +127,14 @@ class User extends DBConnect{
 
     foreach($categories as $category){
 
-      //var_dump(count($results));
-        foreach($results as $result){
-          //echo $result->title."<br>";
-          if(isset($result) && $result->title == $category){
-            $existing = true;
-            echo $result->title." already exists <br>";
-          }
+      foreach($results as $result){
+        if(isset($result) && $result['title'] == $category){
+          $existing = true;
+          echo $result['title']." already exists <br>";
         }
+      }
 
-      // why the fuck doesn't it I N S E R T
       if($existing == false){
-
         $sql = 'INSERT INTO categories(title, author)
                 VALUES(?, ?)';
         $stmt = $pdo->prepare($sql);
@@ -151,7 +147,6 @@ class User extends DBConnect{
               VALUES(?, ?)';
       $stmt = $pdo->prepare($sql);
       $stmt->execute([$category, $title]);
-
     }
   }
 
