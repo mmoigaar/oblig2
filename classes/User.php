@@ -1,45 +1,41 @@
 <?php
 require_once('DBConnect.php');
-
 class User extends DBConnect{
 
-  // Checks if visitor is logged in. Sets cookie no cookie exists.
-  public function checkLoginState(){
-
-    // Check if logged in
-    if(!isset($_SESSION['user'])){
-      // if not logged in, set guest cookie if no cookie exists
-      if(!isset($_COOKIE['user'])){
-        setcookie('user', 'guest', time()+1000000);
-      }
-    }else{
-      //If logged in, set user cookie if no cookie exists. If guest cookie exists, overwrite.
-      if(!isset($_COOKIE['user'])){
-        setcookie('user', $_SESSION['user'], time()+1000000);
-      }else if($_COOKIE['user'] != $_SESSION['user']){
-        $_COOKIE['user'] = $_SESSION['user'];
-      }
-    }
-    //echo $_COOKIE['user'];
-  } // End function checkLoginState
-
-  // Stores displayPrefs to whichever was clicked last, if any.
+  // Stores displayPref for logged in user to whichever was clicked last, if any.
   // This runs if visitor clicked "rand" or "Most Popular"
   public function setDisplayPref($pref){
-    // Sets cookie if nonexisting
-    if(!isset($_COOKIE['displayPrefs'])){
-      setcookie('displayPrefs', $pref, time()+1000000);
+
+    session_start();
+    if(isset($_SESSION['user'])){
+      // Sets unique cookie name for each logged in user
+      $cookieName = "displayPref_" . $_SESSION['user'];
+    }else{
+      // Sets default cookie name for guest users
+      $cookieName = "displayPref";
     }
-    // Changes cookie value
-    $_COOKIE['displayPrefs'] = $pref;
+
+    // Checks if cookie exists and unsets if it does
+    if(isset($_COOKIE[$cookieName])){
+      unset($_COOKIE[$cookieName]);
+      setcookie($cookieName, null, -1, '/');
+    }
+    // Sets cookie with display preference as value
+    setcookie($cookieName, $pref, time()+1000000, '/');
+    $_COOKIE[$cookieName] = $pref;
   }
 
   // Checks if cookie value is set
   public function checkDisplayPref(){
-    if(isset($_COOKIE['displayPrefs'])){
+    session_start();
+    if(isset($_SESSION['user'])){
+      $cookieName = "displayPref_" . $_SESSION['user'];
+    }else{
+      $cookieName = "displayPref";
+    }
 
-      // Why the motherfuck is this the only one that gets echoed on screen
-      echo $_COOKIE['displayPrefs'];
+    if(isset($_COOKIE[$cookieName])){
+      echo $_COOKIE[$cookieName];
     }else{
       echo "none";
     }

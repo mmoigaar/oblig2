@@ -10,11 +10,6 @@
   <body>
     <?php
       session_start();
-      include 'classes/User.php';
-
-      $user = new User();
-      $user->checkLoginState();
-
       include 'include/header.php';
       include 'include/cardTemplates.php';
     ?>
@@ -41,17 +36,17 @@
             <h2>Categories</h2>
             <hr/>
 
-            <div class="category blue" onclick="displayChoice('All')">
+            <div class="category blue" onclick="displayCat('All')">
               <h3>Show all</h3>
             </div>
 
             <!-- This has to be form submitted name='rand'-->
-            <div class="category blue" onclick="displayChoice('rand')">
+            <div id="randomCat" class="category blue" onclick="displayCat('rand'), setDisplayPref('rand')">
               <h3>Random</h3>
             </div>
 
             <!-- This has to be form submitted name='mostPop'-->
-            <div id="mostPop" class="orange">
+            <div id="mostPop" class="orange hide">
               <h3>Most popular this week:</h3>
             </div>
 

@@ -22,6 +22,11 @@ if(isset($_POST['action'])) {
     case 'checkDisplayPref':
       $user->checkDisplayPref();
       break;
+    case 'setDisplayPref':
+      $pref = $_POST['pref'];
+      echo $pref;
+      $user->setDisplayPref($pref);
+      break;
   }
 }
 
