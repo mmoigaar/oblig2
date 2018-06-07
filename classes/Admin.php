@@ -9,8 +9,8 @@ class Admin extends DBConnect{
     /*
     $sql =
       'DELETE *
-       FROM entries
-       WHERE title = "'.$category.'"';
+       FROM categories
+       WHERE id = "'.$category.'"';
     // Add "ON DELETE CASCADE" to all tables referencing category
     $stmt = $pdo->prepare($sql);
     $stmt->execute();

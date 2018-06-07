@@ -10,7 +10,7 @@
       </article>
         <div class="categories h50 block pink cardSection">
           <form method="post">
-            <input class="deleteEntry" type="checkbox" name="deleteEntry" value="">
+            <button id="deleteEntry">Delete</button>
           </form>
         </div>
     </div>

@@ -1,7 +1,3 @@
-$(document).ready(function(){
-  getCategories();
-});
-
 function getCategories(){
   // Posts 'getCategories' to the index controller
   $.ajax({
@@ -9,6 +5,7 @@ function getCategories(){
     data: {action: 'getCategories'},
     type: 'post',
     success: function(output){
+      console.log(output);
       // Callback function stores global var
       callback('categories', JSON.parse(output));
       // Makes next ajax call once something is returned from current call
@@ -116,7 +113,7 @@ function appendCategories(json, currentMostPop){
       tmpl.removeAttr('id');
       tmpl.find('h3').html(json[i].title);
       tmpl.attr('role', 'button');
-      tmpl.attr('onclick', 'displayCat("' + json[i].title + '")');
+      tmpl.attr('onclick', 'displayCat("' + json[i].id + '")');
 
       $('#categoriesContainer').append(tmpl);
     }
@@ -139,9 +136,11 @@ function appendCards(page, json){
           tmpl.find('.categories').find('p').html()+json[i].classes[j]+' '
         );
       }
-    }else{
+    }else if(page == 'user'){
       var value = json[i].title;
-      tmpl.find('.deleteEntry').val(value);
+
+      var onclick = 'deleteEntry('+'"'+json[i].id+'")';
+      tmpl.find('#deleteEntry').attr('onclick', onclick);
     }
 
     tmpl.find('.title').html(json[i].title);
@@ -150,7 +149,6 @@ function appendCards(page, json){
 
     $('#cardContainer').append(tmpl);
   }
-
 
   // Calls displayCat to display random category after all cards are appended, unless preference is set to mostPop.
   if(page == 'home'){

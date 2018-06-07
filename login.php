@@ -19,8 +19,8 @@
         <h2>Register a new account!</h2>
         <form method="post">
           <input type="text" name="newUser" placeholder="username"><br>
-          <input type="text" name="newPass" placeholder="password"><br>
-          <input type="text" name="email" placeholder="qwe@qwe.qwe"><br>
+          <input type="password" name="newPass" placeholder="password"><br>
+          <input type="email" name="email" placeholder="qwe@qwe.qwe"><br>
           <input type="submit" name="register" value="register">
         </form>
       </div>
@@ -29,7 +29,7 @@
         <h2>Already a user? Log in!</h2>
         <form method="post">
           <input type="text" name="existingUser" placeholder="username"><br>
-          <input type="text" name="existingPass" placeholder="password"><br>
+          <input type="password" name="existingPass" placeholder="password"><br>
           <input type="submit" name="login" value="login">
         </form>
       </div>

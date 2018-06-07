@@ -22,43 +22,34 @@
     public function mostPop(){
       $pdo = $this->pdo;
 
-      // Selects title of entries from the past week
+      // Selects resulting entries' categories from category_entries
       $sql =
-        'SELECT title
-         FROM entries
-         WHERE submission_date BETWEEN date_sub(now(),INTERVAL 1 WEEK) and now()';
+        'SELECT categoryID
+         FROM category_entries
+         WHERE submission_date BETWEEN date_sub(NOW(),INTERVAL 1 WEEK) and NOW()';
+         // I DECIDED TO DO THIS APPARENTLY, SO BETTER FINISH
 
       $stmt = $pdo->prepare($sql);
       $stmt->execute();
-      $results = $stmt->fetchAll(PDO::FETCH_NUM);
+      $results = $stmt->fetchAll();
+
+      print_r($results); //remove
+      echo "<br><br>";
 
       if(count($results) == 0){
         echo 'none';
         die;
       }
-      // Selects resulting entries' categories from category_entries
-      $sql =
-        'SELECT category
-         FROM category_entries
-         WHERE entry = ?';
-
-      $execute = [$results[0][0]];
-      if(count($results) > 1){
-        for($i = 1; $i < count($results); $i++){
-          $sql .= ' OR entry = ?';
-          $execute[] = $results[$i][0];
-        }
-      }
-
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute($execute);
-      $results = $stmt->fetchAll();
 
       $catArray = [];
+
       // appends category title to array 'catArray' for each occurence
       foreach($results as $cat){
         array_push($catArray, $cat['category']);
       }
+
+      print_r($catArray); //remove
+      echo "<br><br>";
 
       // Counts the number of occurences for each category title
       $catArray = array_count_values($catArray);
@@ -73,5 +64,6 @@
 
     }
   }
-
+$category = new Category();
+$category->mostPop();
 ?>

@@ -1,49 +1,52 @@
 <?php
 /*
+$conn = new mysqli('localhost', 'root', '');
+$query = 'CREATE DATABASE urban_dictionary';
+$conn->query($query) or die ($conn->error);
+*/
 $conn = new mysqli('localhost', 'root', '', 'urban_dictionary');
-
-if ($conn->connect_error){
-  die("Connection failed: " . $conn->connect_error);
-}
-echo "connected yo <br>";
-
-
+/*
 $query = "CREATE TABLE users(
-  username VARCHAR(20) NOT NULL UNIQUE PRIMARY KEY,
-  password VARCHAR(255) NOT NULL,
-  email VARCHAR(50) NOT NULL,
-  user_type ENUM('basic', 'admin')
+  id int NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+  username varchar(20) NOT NULL UNIQUE,
+  password varchar(255) NOT NULL,
+  email varchar(50) NOT NULL,
+  user_type enum('basic', 'admin')
 )";
 
 $conn->query($query) or die ($conn->error);
-
+*/
 $query = "CREATE TABLE categories(
-  title VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY,
-  author VARCHAR(20) NOT NULL,
-  FOREIGN KEY(author) REFERENCES users(username)
+  id int NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+  title varchar(50) NOT NULL UNIQUE,
+  author varchar(20) NOT NULL,
+  FOREIGN KEY(author) REFERENCES users(username) ON DELETE CASCADE
 )";
 
 $conn->query($query) or die ($conn->error);
 
 $query = "CREATE TABLE entries(
-  title VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY,
-  author VARCHAR(20) NOT NULL,
+  id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title varchar(50) NOT NULL UNIQUE ,
+  author varchar(20) NOT NULL,
   submission_date DATE,
-  context VARCHAR(100),
-  content VARCHAR(1000),
-  FOREIGN KEY(author) REFERENCES users(username)
+  context varchar(100),
+  content varchar(1000),
+  FOREIGN KEY(author) REFERENCES users(username) ON DELETE CASCADE
 )";
 
 $conn->query($query) or die ($conn->error);
+
 
 $query = "CREATE TABLE category_entries(
-  category VARCHAR(50) NOT NULL,
-  entry VARCHAR(50) NOT NULL,
-  PRIMARY KEY(category, entry),
-  FOREIGN KEY(category) REFERENCES categories(title),
-  FOREIGN KEY(entry) REFERENCES entries(title)
+  entryID int NOT NULL,
+  categoryID int NOT NULL,
+  submission_date DATE,
+  PRIMARY KEY(entryID, categoryID),
+  FOREIGN KEY(entryID) REFERENCES entries(id),
+  FOREIGN KEY(categoryID) REFERENCES categories(id)
 )";
 
 $conn->query($query) or die ($conn->error);
-*/
+
 ?>

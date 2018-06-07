@@ -108,7 +108,8 @@ class User extends DBConnect{
               VALUES(?, ?, NOW(), ?, ?)';
       $stmt = $pdo->prepare($sql);
       $stmt->execute([$title, $author, $context, $content]);
-
+      $entryID = $pdo->lastInsertId(); // Gets auto incremented ID
+      echo $entryID;
       echo "Inserted entry probably <br>";
     }
 
@@ -119,13 +120,12 @@ class User extends DBConnect{
     $results = $stmt->fetchAll();
     $existing = false;
 
-    //var_dump($categories);
-
     foreach($categories as $category){
 
       foreach($results as $result){
         if(isset($result) && $result['title'] == $category){
           $existing = true;
+          $categoryID = $result['id'];
           echo $result['title']." already exists <br>";
         }
       }
@@ -135,18 +135,20 @@ class User extends DBConnect{
                 VALUES(?, ?)';
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$category, $author]);
+        $categoryID = $pdo->lastInsertId(); // Gets auto incremented ID
+        echo $categoryID;
       }
       $existing = false;
 
       // Category_entry things
-      $sql = 'INSERT INTO category_entries(category, entry)
-              VALUES(?, ?)';
+      $sql = 'INSERT INTO category_entries(entryID, categoryID, submission_date)
+              VALUES(?, ?, NOW())';
       $stmt = $pdo->prepare($sql);
-      $stmt->execute([$category, $title]);
+      $stmt->execute([$entryID, $categoryID]);
     }
   }
 
-  public function listOwnEntries($user){
+  public function getOwnEntries($userID){
     $pdo = $this->pdo;
 
     $sql =
@@ -155,15 +157,17 @@ class User extends DBConnect{
        WHERE author = ?';
 
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$user]);
-    $results = $stmt->fetchAll();
+    $stmt->execute(['user1']);
+    if($stmt->rowCount() > 0){
+      $results = $stmt->fetchAll();
+    }else{
+      echo 'false';
+    }
 
     $json = json_encode($results);
-    return $json;
+    echo $json;
 
   } // End function listOwnEntries
-
-
 
 }
 

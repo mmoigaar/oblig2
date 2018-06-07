@@ -6,9 +6,11 @@ require_once('../classes/User.php');
 $category = new Category();
 $entry = new Entry();
 $user = new User();
+session_start();
 
 if(isset($_POST['action'])) {
   $action = $_POST['action'];
+  $userID = $_SESSION['user'];
   switch($action) {
     case 'getCategories':
       $category->getCategories();
@@ -26,6 +28,12 @@ if(isset($_POST['action'])) {
       $pref = $_POST['pref'];
       echo $pref;
       $user->setDisplayPref($pref);
+      break;
+    case 'getOwnEntries':
+      $user->getOwnEntries($_SESSION['user']);
+      break;
+    case 'deleteEntry':
+      $entry->deleteEntry($_POST['del']);
       break;
   }
 }

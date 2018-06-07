@@ -37,6 +37,20 @@ class Entry extends DBConnect{
     echo $json;
   } // End function getEntries
 
+  public function deleteEntry($entryID){
+    $pdo = $this->pdo;
+
+    $sql =
+      'DELETE *
+       FROM entries
+       WHERE id = ?';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$entryID]);
+
+    echo 'success';
+
+  } // End function deleteCategory
 }
 
 

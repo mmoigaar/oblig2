@@ -14,10 +14,7 @@
       include 'include/header.php';
       include 'include/userCards.php';
 
-      if(isset($_SESSION['user'])){
-        $user = new User();
-        $json = $user->listOwnEntries($_SESSION['user']);
-      }else{
+      if(!isset($_SESSION['user'])){
         header('location:login.php');
       }
     ?>
@@ -35,6 +32,7 @@
 
     </div>
 
-    <script src="js/main.js"> // This runs document ready functions, which includes listing random entries. Can't have that, yo. Make JS files for each files.</script>
+    <script src="js/main.js"></script>
+    <script src="js/user.js"></script>
   </body>
 </html>
